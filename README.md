@@ -25,7 +25,7 @@ Xem ghi chú tóm tắt các bài học: [LINK](https://github.com/STEAMforVietn
 **LƯU Ý:**
 
 - Một số màn chơi sẽ bị lag nhiều hơn các màn chơi khác, do mình thêm vào quá nhiều bóng mà và chúng bắn ra quá nhiều đạn.
-- Khi hoạt động, game sẽ có khả năng bị lỗi "Fatal Python Error: (pygame parachute) segmentation error" do tải lên quá nhiều entities. Khi đó, hãy thử chạy lại game.
+- Khi hoạt động, game sẽ có khả năng bị lỗi "Fatal Python Error: (pygame parachute) Segmentation fault" do tải lên quá nhiều entities. Khi đó, hãy thử chạy lại game.
 (mình xin các bạn thông cảm giùm mình, đó là cái giá mình nhận khi mình muốn làm 1 game hay.)
 
 **Còn bây giờ, mình mong các bạn thưởng thức trò chơi nhé!**
