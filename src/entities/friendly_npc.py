@@ -125,12 +125,13 @@ class FriendlyNpc(AnimatedEntity):
         Returns the next line in the current dialogue or None.
         """
         self.line_index += 1
-        if self.line_index >= len(self.dialogues[self.dialogue_index]):
-            # Prepare to move on to the next dialogue,
-            # return None to indicate current dialogue has ended.
-            self.line_index = -1
-            self.dialogue_index += 1
-            return None
+        if self.dialogue_index < len(self.dialogues):
+            if self.line_index >= len(self.dialogues[self.dialogue_index]):
+                # Prepare to move on to the next dialogue,
+                # return None to indicate current dialogue has ended.
+                self.line_index = -1
+                self.dialogue_index += 1
+                return None
         if not self.has_dialogue():
             return None
         return self.dialogues[self.dialogue_index][self.line_index]

@@ -8,10 +8,19 @@ from common import util
 from common.event import EventType, GameEvent
 from common.types import ActionType, EntityType
 from common.util import now
-from config import GameConfig, PlayerConfig, TrampolineConfig
+from config import (
+    Color,
+    GameConfig,
+    PlayerConfig,
+    PlayerHpBarConfig,
+    ShadowConfig,
+    ShadowBossConfig,
+    ShadowBulletConfig,
+    SpikesConfig,
+    TrampolineConfig
+)
 from entities.animated_entity import AnimatedEntity
 from entities.friendly_npc import FriendlyNpc
-from entities.trampoline import Trampoline
 
 if TYPE_CHECKING:
     from worlds.world import World
@@ -34,6 +43,7 @@ class Player(AnimatedEntity):
         self.max_hp: int = PlayerConfig.INITIAL_HP
         self.hp_entity_id: Optional[int] = None
 
+        self.time_since_last_throw: int = now()
         self.last_hit_t: int = 0
 
     def get_x_y_w_h(self) -> tuple:
@@ -56,6 +66,7 @@ class Player(AnimatedEntity):
         self._update_inventory_entity()
 
         self._handle_get_hit()
+        self._handle_get_healed()
         if self.hp <= 0:
             self.die()
         if self.rect.top > GameConfig.HEIGHT:
@@ -89,10 +100,6 @@ class Player(AnimatedEntity):
         # Cap the HP to self.max_hp
         self.hp = min(self.hp, self.max_hp)
 
-        if not self.hp_entity_id:
-            self.hp_entity_id = self.world.add_entity(EntityType.PLAYER_HP)
-        self.world.get_entity(self.hp_entity_id).set_hp(self.max_hp, self.hp)
-
     def _update_inventory_entity(self):
         """
         This Player entity directly manages a PlayerInventory entity.
@@ -115,6 +122,9 @@ class Player(AnimatedEntity):
                     self.move_right(True)
                 elif event.is_key_down(pygame.K_UP, pygame.K_SPACE, pygame.K_w):
                     self.jump()
+            else:
+                self.move_left(False)
+                self.move_right(False)
 
             if event.is_key_up(pygame.K_LEFT, pygame.K_a):
                 self.move_left(False)
@@ -165,6 +175,8 @@ class Player(AnimatedEntity):
         Set it motions to go left or right depending on the facing of Player.
         :return:
         """
+        if now() - self.time_since_last_throw < PlayerConfig.TIME_UNTIL_ANOTHER_THROW_MS:
+            return
         self.set_action(ActionType.THROW, duration_ms=PlayerConfig.THROW_DURATION_MS)
         ball_id = self.world.add_entity(
             EntityType.PLAYER_BULLET,
@@ -176,27 +188,47 @@ class Player(AnimatedEntity):
             ball.move_left()
         else:
             ball.move_right()
+        self.time_since_last_throw = now()
 
     def _handle_get_hit(self):
         for bullet in self.world.get_entities(EntityType.SHADOW_BULLET):
             if self.collide(bullet):
                 self.world.remove_entity(bullet.id)
-                self._take_damage(bullet.damage)
+                self._take_damage(bullet.damage,ShadowBulletConfig.INVUL_DURATION_FOR_PLAYER_MS)
 
         for shadow in self.world.get_entities(EntityType.SHADOW):
-            if self.collide(shadow):
-                self._take_damage(shadow.damage)
+            if self.collide(shadow) and not shadow.is_dying:
+                self._take_damage(shadow.damage,ShadowConfig.INVUL_DURATION_FOR_PLAYER_MS)
 
-    def _take_damage(self, damage: int):
+        for shadow_boss in self.world.get_entities(EntityType.SHADOW_BOSS):
+            if self.collide(shadow_boss) and not shadow_boss.is_dying:
+                self._take_damage(shadow_boss.damage,ShadowBossConfig.INVUL_DURATION_FOR_PLAYER_MS)
+
+        for spikes in self.world.get_entities(EntityType.SPIKES):
+            if self.collide(spikes):
+                self._take_damage(spikes.damage,SpikesConfig.INVUL_DURATION_FOR_PLAYER_MS)
+
+    def _take_damage(self, damage: int, invul_duration_ms: int):
         now_ms = now()
-        if now_ms - self.last_hit_t < PlayerConfig.INVULNERABLE_DURATION_MS:
+        if now_ms - self.last_hit_t < invul_duration_ms:
             return
         else:
             self.stop()
             self.start_hurt(duration_ms=PlayerConfig.HURT_DURATION_MS)
             self.last_hit_t = now_ms
-            logger.debug(f"Player HP: {self.hp} -> {self.hp - damage}")
-            self.hp -= damage
+            logger.debug(f"Player HP: {self.hp} -> {max(self.hp - damage,0)}")
+            self.hp = max(self.hp - damage, 0)
+
+    def _handle_get_healed(self):
+        for extra_hp_box in self.world.get_entities(EntityType.EXTRA_HP_BOX):
+            if self.collide(extra_hp_box):
+                self._heal(extra_hp_box.hp_boost)
+                self.world.remove_entity(extra_hp_box.id)
+
+    def _heal(self, hp_boost: int):
+        GameEvent(EventType.HEAL, sender_type=self.entity_type).post()
+        logger.debug(f"Player HP: {self.hp} -> {min(self.hp + hp_boost,self.max_hp)}")
+        self.hp = min(self.hp + hp_boost,self.max_hp)
 
     def _update_screen_offset(self):
         """Logics for horizontal world scroll based on player movement"""
@@ -220,10 +252,32 @@ class Player(AnimatedEntity):
         self.world.update_screen_offset(delta_screen_offset)
 
     def _maybe_jump_with_trampoline(self):
-        trampoline: Trampoline
         for trampoline in self.world.get_trampolines():
             if self.collide(trampoline) and self.rect.bottom > trampoline.rect.top:
                 trampoline.set_action(
                     ActionType.ANIMATE, duration_ms=TrampolineConfig.ANIMATION_DURATION_MS
                 )
                 self.jump_with_trampoline()
+
+    def render(self, screen, *args, **kwargs) -> None:
+        super().render(screen, *args, **kwargs)
+
+        util.display_text(
+            screen,
+            f"HP: {self.hp} / {self.max_hp}",
+            x=PlayerHpBarConfig.X,
+            y=PlayerHpBarConfig.Y - 20,
+            font_size=16,
+            color=Color.PLAYER_HP_BAR,
+        )
+
+        util.draw_pct_bar(
+            screen=screen,
+            fraction=self.hp / self.max_hp,
+            x=PlayerHpBarConfig.X,
+            y=PlayerHpBarConfig.Y,
+            width=PlayerHpBarConfig.WIDTH,
+            height=PlayerHpBarConfig.HEIGHT,
+            color=Color.PLAYER_HP_BAR,
+            margin=4
+        )

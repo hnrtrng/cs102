@@ -21,6 +21,7 @@ class Color:
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)
     LOADING_BAR = (255, 51, 153)
+    PLAYER_HP_BAR = (255, 51, 153)
     BOSS_HP_BAR = (255, 51, 153)
     TEXT_DIALOGUE_SUBJECT = (19, 2, 150)
     TEXT_DIALOGUE = (204, 115, 14)
@@ -35,20 +36,20 @@ class GameConfig:
     FPS: int = 60
     WIDTH: int = 1248
     HEIGHT: int = 768
-    TILE_SIZE: int = 48
+    TILE_SIZE: int = 30
     PLAYER_SOFT_EDGE_WIDTH: int = 300
 
     VICTORY_BACKGROUND: Path = ASSET_DIR / "backgrounds" / "victory.png"
 
     MENU_MUSIC: Path = ASSET_DIR / "sounds" / "background" / "menu.wav"
-    MENU_MUSIC_VOLUME: float = 0.12
+    MENU_MUSIC_VOLUME: float = 0.3
 
     DEFEATED_MUSIC: Path = ASSET_DIR / "sounds" / "background" / "defeated.wav"
     VICTORY_MUSIC: Path = ASSET_DIR / "sounds" / "background" / "victory.wav"
     BONUS_LEVEL_END_MUSIC: Path = ASSET_DIR / "sounds" / "background" / "victory.wav"
 
-    INGAME_MUSIC_VOLUME: float = 0.05
-    SOUND_EFFECT_VOLUME: float = 0.18
+    INGAME_MUSIC_VOLUME: float = 0.3
+    SOUND_EFFECT_VOLUME: float = 0.3
 
 
 class LevelLoadingBarConfig:
@@ -73,73 +74,75 @@ class PlayerConfig:
     DEFAULT_X: int = 350
     DEFAULT_Y: int = 400
     SPRITE_PATH: Path = ASSET_DIR / "player"
-    SCALE: float = 0.16
-    GRAVITY: int = 2
-    SPEED: int = 7
-    JUMP_VERTICAL_SPEED: int = 26
-    JUMP_WITH_TRAMPOLINE_SPEED: int = 40
+    SCALE: float = 0.125
+    GRAVITY: float = 1.25
+    SPEED: int = 5
+    JUMP_VERTICAL_SPEED: int = 18
+    JUMP_WITH_TRAMPOLINE_SPEED: int = 27
     # minimal time until switching to the next sprite in sequence
     ANIMATION_INTERVAL_MS: int = 70 * 60 // GameConfig.FPS
-    INITIAL_HP: int = 3
-    INVULNERABLE_DURATION_MS: int = 1000
+    INITIAL_HP: int = 100
 
-    HURT_DURATION_MS: int = 80 * 4
+    HURT_DURATION_MS: int = 320
 
     # TODO: we have 7 sprites for ActionType.THROW but only use 2-3 now
     THROW_DURATION_MS: int = 170 * 60 // GameConfig.FPS
+    TIME_UNTIL_ANOTHER_THROW_MS: int = 250
 
-
-class PlayerHpConfig:
-    X: int = 10
-    Y: int = 30
-    X_STEP: int = 60  # distance between 2 consecutive hearts
-    FULL_HEART_PATH: Path = ASSET_DIR / "items" / "full_heart.png"
-    EMPTY_HEART_PATH: Path = ASSET_DIR / "items" / "empty_heart.png"
-
+class PlayerHpBarConfig:
+    X: int = 24
+    Y: int = 44
+    WIDTH: int = 250
+    HEIGHT: int = 30
 
 class PlayerInventoryConfig:
     X: int = 290
-    Y: int = 30
+    Y: int = 44
     X_STEP: int = 60  # distance between 2 consecutive items
 
     # the simple vertical divider
     SPRITE_PATH: Path = ASSET_DIR / "items" / "player_inventory.png"
-    SCALE: int = 1
+    SCALE: float = 1.3
 
-    TILE_SIZE: int = 34
+    TILE_SIZE: int = 36
 
 
 class PlayerBulletConfig:
     SPRITE_PATH: Path = ASSET_DIR / "items" / "player_bullet.png"
-    SCALE: float = 0.7
-    SPEED: int = 35
-    GRAVITY: int = 2
+    SCALE: float = 0.65
+    SPEED: int = 24
+    JUMP_WITH_TRAMPOLINE_SPEED: int = 21
+    GRAVITY: float = 1.7
     DAMAGE: int = 10
 
     # initial vertical movement
     INIT_DY: int = -10
 
     # the time between creation and deletion of entities of this type
-    TTL_MS: int = 400 * 60 // GameConfig.FPS
+    TTL_MS: int = 1000 * 60 // GameConfig.FPS
 
 
 class ShadowConfig:
     SPRITE_PATH: Path = ASSET_DIR / "npcs" / "shadow"
-    SCALE: float = 0.2
+    SCALE: float = 0.135
     ANIMATION_INTERVAL_MS: int = 200
     SPEED: int = 1
-    DAMAGE: int = 1
+    DAMAGE: int = 10
+    INVUL_DURATION_FOR_PLAYER_MS: int = 400
+
+    ATTACK_INTERVAL_MS: int = 10000
 
 
 class ShadowBossConfig:
     SPRITE_PATH: Path = ASSET_DIR / "npcs" / "shadow"
-    SCALE: float = 0.6
+    SCALE: float = 0.45
     ANIMATION_INTERVAL_MS: int = 200
     SPEED: int = 1
-    DAMAGE: int = 1
-    INITIAL_HP: int = 100
+    DAMAGE: int = 20
+    INVUL_DURATION_FOR_PLAYER_MS: int = 2000
+    INITIAL_HP: int = 500
 
-    ANGRY_INTERVAL_MS: int = 7000
+    ANGRY_INTERVAL_MS: int = 4000
     ANGRY_DURATION_MS: int = 2000
 
     HURT_DURATION_MS: int = 500
@@ -147,10 +150,12 @@ class ShadowBossConfig:
 
 class ShadowBulletConfig:
     SPRITE_PATH: Path = ASSET_DIR / "items" / "shadow_bullet.png"
-    SCALE: float = 0.05
-    SPEED: int = 5
-    GRAVITY: int = 0.3
-    DAMAGE: int = 1
+    SCALE: float = 0.0375
+    SPEED: int = 4
+    JUMP_WITH_TRAMPOLINE_SPEED: int = 16
+    GRAVITY: float = 0.4
+    DAMAGE: int = 10
+    INVUL_DURATION_FOR_PLAYER_MS: int = 1000
 
     # initial vertical movement
     INIT_DY: int = -15
@@ -159,10 +164,18 @@ class ShadowBulletConfig:
     TTL_MS: int = 3000
 
 
+class SpikesConfig:
+    SPRITE_PATH: Path = ASSET_DIR / "items" / "spikes.png"
+    SCALE: int = 1
+    DAMAGE: int = 2
+    INVUL_DURATION_FOR_PLAYER_MS: int = 650
+
+
 class EndingBurgerConfig:
     SPRITE_PATH: Path = ASSET_DIR / "items" / "player_bullet.png"
-    SCALE: float = 0.8
-    GRAVITY: float = 2.5
+    SCALE: float = 0.5
+    JUMP_WITH_TRAMPOLINE_SPEED: int = 20
+    GRAVITY: float = 2.1
 
     # the time between creation and deletion of entities of this type
     TTL_MS: int = 420
@@ -170,15 +183,19 @@ class EndingBurgerConfig:
 
 class TrampolineConfig:
     SPRITE_PATH: Path = ASSET_DIR / "items" / "trampoline"
-    SCALE: float = 0.3
+    SCALE: float = 0.1875
     ANIMATION_INTERVAL_MS: int = 60
     ANIMATION_DURATION_MS: int = 700
+
+class ExtraHpBoxConfig:
+    SPRITE_PATH: Path = ASSET_DIR / "items" / "extra_hp_box.png"
+    HP_BOOST: int = 20
 
 
 @dataclass
 class NpcConfig:
     entity_type: EntityType
-    scale: float = 0.6
+    scale: float = 0.5
     animation_interval_ms: int = 2500
     default_alpha: int = 180  # 255 is fully opaque
 

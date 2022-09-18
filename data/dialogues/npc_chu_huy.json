@@ -1,0 +1,75 @@
+{
+  "name": "Chú Huy",
+  "dialogues": [
+    [
+      {
+        "Subject": "Táy Máy",
+        "Line": "Em chào anh ạ!"
+      },
+      {
+        "Subject": "Chú Huy",
+        "Line": "Anh chào em. Em chắc hẳn là Táy Máy phải không?"
+      },
+      {
+        "Subject": "Táy Máy",
+        "Line": "Dạ vâng ạ!"
+      },
+      {
+        "Subject": "Chú Huy",
+        "Line": "À, anh đã ngồi đây nhìn qua camera và thấy hành trình của em,..."
+      },
+      {
+        "Subject": "Chú Huy",
+        "Line": "... em quả đã khéo léo vượt qua nhiều cạm bẫy của bóng ma..."
+      },
+      {
+        "Subject": "Chú Huy",
+        "Line": "... và dần dần xua tan chúng ra khỏi thung lũng STEAM."
+      },
+      {
+        "Subject": "Chú Huy",
+        "Line": "Em quả thật đáng khâm phục!"
+      },
+      {
+        "Subject": "Táy Máy",
+        "Line": "Em cám ơn lời khen của anh! Nhưng mà..."
+      },
+      {
+        "Subject": "Táy Máy",
+        "Line": "...ở đây nguy hiểm lắm, sao anh vẫn ngồi đây vậy?"
+      },
+      {
+        "Subject": "Chú Huy",
+        "Line": "Anh phải dùng hệ thống an ninh của thung lũng STEAM..."
+      },
+      {
+        "Subject": "Chú Huy",
+        "Line": "... để hạn chế ảnh hưởng của chúa tể bóng đen."
+      },
+      {
+        "Subject": "Táy Máy",
+        "Line": "Anh đừng lo, em có thể tiêu diệt hắn!"
+      },
+      {
+        "Subject": "Chú Huy",
+        "Line": "Em có chắc em muốn ra ngoài đó đương đầu không?"
+      },
+      {
+        "Subject": "Táy Máy",
+        "Line": "Nếu em có thể diệt được những bóng ma nhỏ..."
+      },
+      {
+        "Subject": "Táy Máy",
+        "Line": "... thì em cũng có thể tiêu diệt hắn, một lần và mãi mãi!"
+      },
+      {
+        "Subject": "Chú Huy",
+        "Line": "À, nếu vậy thì để anh dẫn em lên tầng cao nhất. Chúc em may mắn!"
+      },
+      {
+        "Subject": "Táy Máy",
+        "Line": "Vâng ạ!"
+      }
+    ]
+  ]
+}

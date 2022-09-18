@@ -54,7 +54,7 @@ class BaseEntity:
         if self.sprite_path:
             if not self.sprite_path.exists():
                 raise FileNotFoundError(
-                    f"Expected file at {self.sprite_path} but NOT found."
+                    f" Expected file at {self.sprite_path} but NOT found."
                     f" You may fix this by adding this file"
                     f" OR update EntityFactory to handle creating {self.entity_type} differently."
                 )
@@ -66,6 +66,13 @@ class BaseEntity:
 
     def collide(self, other: BaseEntity):
         return collide_mask(self, other)
+
+    #def touch(self, other: BaseEntity):
+    #    mask1 = pygame.mask.from_surface(self.image)
+    #    mask2 = pygame.mask.from_surface(other.image)
+    #    offset_x = other.rect.x - self.rect.x
+    #    offset_y = other.rect.y - self.rect.y
+    #    return bool(mask1.overlap(mask2, (offset_x, offset_y)))
 
     def update(self, events: Sequence[GameEvent], world: World):
         """Subclass should implement more of this method."""

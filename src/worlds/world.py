@@ -43,7 +43,7 @@ class World(BaseScene):
         self.is_loading = True
         self.loading_percent = 0
         self.bg_delta_alpha = 0
-        self.bg_alpha = 255  # default alpha: fully opaque
+        self.bg_alpha = 223  # default alpha
 
         self.player: Optional[Player] = None
         self.min_abs_screen_offset = 0
@@ -119,8 +119,9 @@ class World(BaseScene):
             util.display_text(
                 screen,
                 text=f"OFFSET: {self.abs_screen_offset}",
-                x=GameConfig.WIDTH - 250,
-                y=15,
+                x=GameConfig.WIDTH - 300,
+                y=12,
+                font_size=16
             )
 
             # Numbering the tiles at the bottom of the screen, corresponding to the column numbers
@@ -132,6 +133,7 @@ class World(BaseScene):
                     str(i + 1 - self.abs_screen_offset // GameConfig.TILE_SIZE),
                     i * GameConfig.TILE_SIZE + self.abs_screen_offset % GameConfig.TILE_SIZE,
                     y_bottom,
+                    font_size=16
                 )
 
     def set_bg_delta_alpha(self, bg_delta_alpha: float):
@@ -192,6 +194,18 @@ class World(BaseScene):
                         y=y,
                     )
                     logger.info(f"From CSV file, loaded Player position at (x, y) = ({x}, {y})")
+                elif entity_type == EntityType.TRAMPOLINE:
+                    self.add_entity(
+                        entity_type=entity_type,
+                        x=x-9,
+                        y=y-39
+                    )
+                elif entity_type == EntityType.SPIKES:
+                    self.add_entity(
+                        entity_type=entity_type,
+                        x=x,
+                        y=y+15
+                    )
                 else:
                     self.add_entity(
                         entity_type=entity_type,

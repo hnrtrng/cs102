@@ -3,8 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from common import util
-from common.event import EventType, GameEvent
-from common.types import COLLECTABLE_TYPES
+from common.types import EntityType,COLLECTABLE_TYPES
 
 if TYPE_CHECKING:
     from worlds.world import World
@@ -16,8 +15,7 @@ def event_handler(world: World) -> None:
     """
     Logics for ending bonus level 12.
     """
-    needed_items_cnt = 19
+    needed_items_cnt = 31
     if world.player.count_inventory(COLLECTABLE_TYPES) >= needed_items_cnt:
-        world.player.discard_inventory(COLLECTABLE_TYPES)
-        logger.info("Ending Level 12")
-        GameEvent(EventType.LEVEL_END).post()
+        for entity in world.get_entities(EntityType.GROUND_C):
+            world.remove_entity(entity.id)

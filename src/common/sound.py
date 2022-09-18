@@ -39,7 +39,7 @@ def play_sounds(events: Sequence[GameEvent]):
             sound.play()
 
 
-def load_music(path: Path, volume: float, play: bool):
+def load_music(path: Path, volume: float, play: bool, loops: int = -1):
     if pygame.mixer.music.get_busy():
         pygame.mixer.music.fadeout(200)
     pygame.mixer.music.unload()
@@ -48,7 +48,7 @@ def load_music(path: Path, volume: float, play: bool):
         return
 
     pygame.mixer.music.load(path)
-    pygame.mixer.music.play(loops=-1, fade_ms=3700)
+    pygame.mixer.music.play(loops=loops, fade_ms=3700)
     if not play:
         pygame.mixer.music.pause()
 
@@ -79,6 +79,7 @@ def handle_music_events(events: Sequence[GameEvent], sound_on: bool):
                 GameConfig.DEFEATED_MUSIC,
                 GameConfig.MENU_MUSIC_VOLUME,
                 play=sound_on,
+                loops=0
             )
 
         elif e.is_type(EventType.DIE) and e.get_sender_type() == EntityType.SHADOW_BOSS:

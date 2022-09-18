@@ -32,8 +32,9 @@ class GameManager:
                 util.display_text(
                     self.screen,
                     f"FPS: {self.clock.get_fps():.1f}",
-                    x=GameConfig.WIDTH - 80,
-                    y=15,
+                    x=GameConfig.WIDTH - 100,
+                    y=12,
+                    font_size=16
                 )
 
             pygame.display.update()

@@ -9,23 +9,25 @@ from config import (
     NpcConfig,
     PlayerBulletConfig,
     PlayerConfig,
-    PlayerHpConfig,
     PlayerInventoryConfig,
     ShadowBossConfig,
     ShadowBulletConfig,
     ShadowConfig,
+    SpikesConfig,
     TrampolineConfig,
+    ExtraHpBoxConfig
 )
 from entities.base_entity import BaseEntity
 from entities.bullet import Bullet
 from entities.dialogue_box import DialogueBox
+from entities.extra_hp_box import ExtraHpBox
 from entities.friendly_npc import FriendlyNpc
 from entities.player import Player
-from entities.player_hp import PlayerHp
 from entities.player_inventory import PlayerInventory
 from entities.shadow import Shadow
 from entities.shadow_alpha import ShadowAlpha
 from entities.shadow_boss import ShadowBoss
+from entities.spikes import Spikes
 from entities.trampoline import Trampoline
 from entities.trampoline_part import TrampolinePart
 
@@ -56,12 +58,6 @@ class EntityFactory:
                 scale=PlayerConfig.SCALE,
                 animation_interval_ms=PlayerConfig.ANIMATION_INTERVAL_MS,
             )
-        elif entity_type == EntityType.PLAYER_HP:
-            return PlayerHp(
-                entity_type=entity_type,
-                x=PlayerHpConfig.X,
-                y=PlayerHpConfig.Y,
-            )
         elif entity_type == EntityType.PLAYER_INVENTORY:
             return PlayerInventory(
                 entity_type=entity_type,
@@ -81,6 +77,7 @@ class EntityFactory:
                 scale=PlayerBulletConfig.SCALE,
                 gravity=PlayerBulletConfig.GRAVITY,
                 speed=PlayerBulletConfig.SPEED,
+                jump_with_trampoline_speed=PlayerBulletConfig.JUMP_WITH_TRAMPOLINE_SPEED,
                 damage=PlayerBulletConfig.DAMAGE,
             )
         elif entity_type == EntityType.SHADOW_BULLET:
@@ -94,6 +91,7 @@ class EntityFactory:
                 scale=ShadowBulletConfig.SCALE,
                 gravity=ShadowBulletConfig.GRAVITY,
                 speed=ShadowBulletConfig.SPEED,
+                jump_with_trampoline_speed=ShadowBulletConfig.JUMP_WITH_TRAMPOLINE_SPEED,
                 damage=ShadowBulletConfig.DAMAGE,
             )
         elif entity_type == EntityType.SHADOW_ALPHA:
@@ -128,6 +126,15 @@ class EntityFactory:
                 speed=ShadowBossConfig.SPEED,
                 damage=ShadowBossConfig.DAMAGE,
             )
+        elif entity_type == EntityType.SPIKES:
+            return Spikes(
+                entity_type=entity_type,
+                x=x,
+                y=y,
+                sprite_path=SpikesConfig.SPRITE_PATH,
+                scale=SpikesConfig.SCALE,
+                damage=SpikesConfig.DAMAGE,
+            )
         elif entity_type in FRIENDLY_NPC_TYPES:
             config: NpcConfig = NpcConfig(entity_type=entity_type)
             return FriendlyNpc(
@@ -156,6 +163,15 @@ class EntityFactory:
                 scale=TrampolineConfig.SCALE,
                 animation_interval_ms=TrampolineConfig.ANIMATION_INTERVAL_MS,
             )
+        elif entity_type == EntityType.EXTRA_HP_BOX:
+            return ExtraHpBox(
+                entity_type=entity_type,
+                x=x,
+                y=y,
+                sprite_path=ExtraHpBoxConfig.SPRITE_PATH,
+                scale=(GameConfig.TILE_SIZE, GameConfig.TILE_SIZE),
+                hp_boost=ExtraHpBoxConfig.HP_BOOST
+            )
         elif entity_type in TRAMPOLINE_PART_TYPES:
             return TrampolinePart(
                 entity_type=entity_type,
@@ -173,6 +189,7 @@ class EntityFactory:
                 sprite_path=EndingBurgerConfig.SPRITE_PATH,
                 scale=EndingBurgerConfig.SCALE,
                 gravity=EndingBurgerConfig.GRAVITY,
+                jump_with_trampoline_speed=EndingBurgerConfig.JUMP_WITH_TRAMPOLINE_SPEED,
                 damage=0,
             )
         else:

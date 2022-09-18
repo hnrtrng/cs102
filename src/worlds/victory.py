@@ -100,8 +100,8 @@ class Victory(BaseScene):
             util.display_text(
                 self.screen,
                 text=line,
-                x=345,
-                y=510 + i * line_height,
+                x=330,
+                y=465 + i * line_height,
                 font_size=22,
                 color=Color.TEXT_CREDIT,
                 alpha=self.credit_text_alpha,

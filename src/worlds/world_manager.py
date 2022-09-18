@@ -1,5 +1,6 @@
 import pygame
 from pygame.surface import Surface
+from time import sleep
 
 from common.event import EventType, GameEvent
 from common.sound import handle_music_events, load_music, play_sounds
@@ -62,10 +63,12 @@ class WorldManager:
                     GameEvent(EventType.START_GAME, level_id=self.level_id + 1).post()
                 else:
                     # Player finishes a bonus level, show a congrats screen
+                    sleep(1)
                     self.start_scene(BonusLevelEnd)
 
             elif e.is_type(EventType.DIE) and e.get_sender_type() == EntityType.PLAYER:
                 logger.info("Player is dead!")
+                sleep(1)
                 self.start_scene(Defeated)
 
             elif e.is_type(EventType.VICTORY):

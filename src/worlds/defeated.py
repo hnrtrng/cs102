@@ -19,13 +19,13 @@ class Defeated(BaseScene):
         util.display_text(
             self.screen,
             text="You died!",
-            x=200,
-            y=200,
+            x=543,
+            y=270,
             font_size=32,
         )
         now_ms = now()
         if now_ms - self.created_at_ms > 1800:
-            util.display_text(self.screen, text="Restarting level ...", x=200, y=300, font_size=32)
+            util.display_text(self.screen, text="Restarting level ...", x=493, y=370, font_size=32)
         if now_ms - self.created_at_ms > 4100:
             GameEvent(EventType.RESTART_LEVEL).post()
         return True

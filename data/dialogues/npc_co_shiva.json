@@ -1,0 +1,75 @@
+{
+  "name": "Cô Shiva",
+  "dialogues": [
+    [
+      {
+        "Subject": "Táy Máy",
+        "Line": "Em chào cô ạ!"
+      },
+      {
+        "Subject": "Cô Shiva",
+        "Line": "Cô chào em! Em là Táy Máy phải không?"
+      },
+      {
+        "Subject": "Táy Máy",
+        "Line": "Vâng ạ!"
+      },
+      {
+        "Subject": "Cô Shiva",
+        "Line": "À, vậy ra em là thực tập sinh mà làm cho ít nhiều cô chú bàn tán."
+      },
+      {
+        "Subject": "Cô Shiva",
+        "Line": "Các cô chú ở đây không ai đủ can đảm để xua tan năng lượng tiêu cực..."
+      },
+      {
+        "Subject": "Cô Shiva",
+        "Line": "... ở thung lũng STEAM, mà em lại tình nguyện để đối mặt..."
+      },
+      {
+        "Subject": "Cô Shiva",
+        "Line": "... với thử thách khó lường đò, em thật là đáng khâm phục!"
+      },
+      {
+        "Subject": "Táy Máy",
+        "Line": "Dạ em cám ơn lời khen của cô ạ!"
+      },
+      {
+        "Subject": "Cô Shiva",
+        "Line": "Không có gì, em ạ. Bây giờ tuy cô không thể hỗ trợ em..."
+      },
+      {
+        "Subject": "Cô Shiva",
+        "Line": "... trong hành trình gian lao sắp tới..."
+      },
+      {
+        "Subject": "Cô Shiva",
+        "Line": "... nhưng cô có 1 điều muốn nhắc cho em."
+      },
+      {
+        "Subject": "Cô Shiva",
+        "Line": "Bọn bóng đen biết em đang tới..."
+      },
+      {
+        "Subject" : "Cô Shiva",
+        "Line": "... nên đã làm một phần sàn nhà trở nên sắc nhọn để cản trở em."
+      },
+      {
+        "Subject": "Cô Shiva",
+        "Line": "Em hãy cẩn thận! Rất may là sẽ có 1 số hộp quà bí mật dọc đường..."
+      },
+      {
+        "Subject": "Cô Shiva",
+        "Line": "...nhằm giúp em phục hồi lại năng lượng."
+      },
+      {
+        "Subject": "Táy Máy",
+        "Line": "Ồ, vậy à? Được rồi, em sẽ cố gắng hết sức vượt qua các chướng ngại!"
+      },
+      {
+        "Subject": "Cô Shiva",
+        "Line": "Cô thích năng lượng tích cực của em. Chúc em may mắn!"
+      }
+    ]
+  ]
+}

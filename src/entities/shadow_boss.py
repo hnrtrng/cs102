@@ -24,7 +24,7 @@ class ShadowBoss(Shadow):
         self.recent_action_started_at[ActionType.ANGRY] = now()
 
     def _update_action(self):
-        if self.set_action(
+        if not self.is_dying and self.set_action(
             ActionType.ANGRY,
             duration_ms=ShadowBossConfig.ANGRY_DURATION_MS,
             interval_ms=ShadowBossConfig.ANGRY_INTERVAL_MS,
@@ -68,9 +68,10 @@ class ShadowBoss(Shadow):
         if self.hp > 0:
             util.display_text(
                 screen,
-                f"{self.hp} / 100",
+                f"BOSS: {self.hp} / {self.initial_hp}",
                 x=self.rect.x,
                 y=self.rect.top + self.HP_TEXT_HEIGHT_OFFSET,
+                font_size=16,
                 color=Color.BOSS_HP_BAR,
             )
 

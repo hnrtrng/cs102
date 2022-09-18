@@ -17,23 +17,29 @@ class EntityType(enum.Enum):
     EMPTY = 0
     GROUND_A = 1
     GROUND_B = 2
+    GROUND_C = 3
 
     PLAYER = 20
     SHADOW = 21
     NPC_CO_NGA = 22
     NPC_CHU_NAM = 23
     NPC_CHU_NHAN = 24
-    SHADOW_ALPHA = 25
+    NPC_CO_SHIVA = 25
+    NPC_CHU_HUY = 26
+    SHADOW_ALPHA = 29
 
     TRAMPOLINE = 30
     TRAMPOLINE_PART_SPRING = 31
     TRAMPOLINE_PART_FRAME = 32
+    SPIKES = 33
+    EXTRA_HP_BOX = 34
 
     SHADOW_BOSS = 40
 
     # Collectable Items 60 -> 79
     CANDY = 60
     HEART = 61
+    DIAMOND = 62
 
     # When the player collects this item, the level ends.
     # For regular levels (ie. no special end-level condition), when designing the CSV file
@@ -44,24 +50,23 @@ class EntityType(enum.Enum):
     DIALOGUE_BOX = 102
     PLAYER_BULLET = 103
     SHADOW_BULLET = 104
-    PLAYER_HP = 105
     PLAYER_INVENTORY = 106
-    HP_HEART = 107
 
     ENDING_BURGER = 108
 
 
-OBSTACLES_TYPES = (EntityType.GROUND_A, EntityType.GROUND_B)
-FRIENDLY_NPC_TYPES = (EntityType.NPC_CO_NGA, EntityType.NPC_CHU_NAM, EntityType.NPC_CHU_NHAN)
+OBSTACLES_TYPES = (EntityType.GROUND_A, EntityType.GROUND_B, EntityType.GROUND_C)
+FRIENDLY_NPC_TYPES = (EntityType.NPC_CO_NGA, EntityType.NPC_CHU_NAM, EntityType.NPC_CHU_NHAN, EntityType.NPC_CO_SHIVA, EntityType.NPC_CHU_HUY)
 TRAMPOLINE_PART_TYPES = (EntityType.TRAMPOLINE_PART_SPRING, EntityType.TRAMPOLINE_PART_FRAME)
 
 COLLECTABLE_TYPES = (
     EntityType.LEVEL_END_FLAG,
     EntityType.HEART,
     EntityType.CANDY,
+    EntityType.DIAMOND
 ) + TRAMPOLINE_PART_TYPES
 
-FIXED_POSITION_TYPES = (EntityType.DIALOGUE_BOX, EntityType.PLAYER_HP, EntityType.PLAYER_INVENTORY)
+FIXED_POSITION_TYPES = (EntityType.DIALOGUE_BOX, EntityType.PLAYER_INVENTORY)
 
 
 class QuestName(enum.Enum):
